@@ -16,5 +16,6 @@ namespace v2rayS.Models
     {
         public bool IsProxyOn { get; set; }
         public ProxyMode ProxyMode { get; set; }
+        public bool IsAutoStart { get; set; }
     }
 }

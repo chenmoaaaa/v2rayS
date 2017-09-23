@@ -28,7 +28,7 @@ namespace v2rayS.Utils
             }
             catch (System.ComponentModel.Win32Exception e)
             {
-                MessageBox.Show(e.StackTrace);
+                MessageBox.Show($"{e.Message}\n{e.StackTrace}");
                 return null;
             }
         }
