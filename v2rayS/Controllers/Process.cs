@@ -19,7 +19,8 @@ namespace v2rayS.Controllers
         public static System.Diagnostics.Process V2rayProcess { get; set; }
 
         private static Configuration _config;
-        public static readonly string SysDirectory = Directory.GetCurrentDirectory() + "\\sys";
+        public static readonly string CurrentDirectory = Directory.GetCurrentDirectory();
+        public static readonly string SysDirectory = CurrentDirectory + "\\sys";
 
         public static void Exit()
         {

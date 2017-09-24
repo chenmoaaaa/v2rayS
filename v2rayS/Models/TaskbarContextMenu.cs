@@ -12,7 +12,7 @@ namespace v2rayS.Models
 {
     class TaskbarContextMenu
     {
-        private static readonly int ITEM_COUNT = 7;
+        private static readonly int ITEM_COUNT = 8;
         private static ContextMenu _menu;
         private static MenuItem[] _items;
         private static Configuration _config = ConfigHandler.GetConfig();
@@ -38,14 +38,20 @@ namespace v2rayS.Models
                 };
                 _items[1] = new MenuItem("系统代理模式", _proxyModeItems) { Enabled = _config.IsProxyOn };
                 _items[2] = new MenuItem("-");
-                _items[3] = new MenuItem("重启V2Ray进程", new EventHandler(RestartProcess_OnClick));
-                _items[4] = new MenuItem("开机启动", new EventHandler(AutoStart_OnClick)) { Checked = _config.IsAutoStart };
-                _items[5] = new MenuItem("-");
-                _items[6] = new MenuItem("退出", (sender, e) => Process.Exit());
+                _items[3] = new MenuItem("编辑config.json", new EventHandler(EditConfigFile_OnClick));
+                _items[4] = new MenuItem("重启V2Ray进程", new EventHandler(RestartProcess_OnClick));
+                _items[5] = new MenuItem("开机启动", new EventHandler(AutoStart_OnClick)) { Checked = _config.IsAutoStart };
+                _items[6] = new MenuItem("-");
+                _items[7] = new MenuItem("退出", (sender, e) => Process.Exit());
 
                 _menu = new ContextMenu(_items);
             }
             return _menu;
+        }
+
+        private static void EditConfigFile_OnClick(object sender, EventArgs e)
+        {
+            ProcessStarter.StartProcessForeground(null, "notepad.exe", "config.json");
         }
 
         private static void RestartProcess_OnClick(object sender, EventArgs e)
@@ -108,14 +114,14 @@ namespace v2rayS.Models
             if (_config.IsAutoStart)
             {
                 //修改注册表，使程序开机时不自动执行
-                _items[4].Checked = false;
+                _items[5].Checked = false;
                 Microsoft.Win32.RegistryKey Rkey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
                 Rkey.DeleteValue("v2rayS", false);
                 _config.IsAutoStart = false;
             }
             else
             {
-                _items[4].Checked = true;
+                _items[5].Checked = true;
                 if (!File.Exists(strName))//指定文件是否存在  
                     return;
                 Microsoft.Win32.RegistryKey Rkey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -124,7 +130,6 @@ namespace v2rayS.Models
                 Rkey.SetValue("v2rayS", strName);//修改注册表，使程序开机时自动执行
                 _config.IsAutoStart = true;
             }
-
         }
     }
 }

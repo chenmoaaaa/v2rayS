@@ -32,5 +32,28 @@ namespace v2rayS.Utils
                 return null;
             }
         }
+
+        public static Process StartProcessForeground(string path, string name, string arguments)
+        {
+            ProcessStartInfo Info = new ProcessStartInfo
+            {
+                FileName = path != null ? path + "\\" + name : name,
+                Arguments = arguments,
+                CreateNoWindow = true,
+                WorkingDirectory = path ?? Directory.GetCurrentDirectory()
+            };
+            Process _proc;
+            try
+            {
+                _proc = Process.Start(Info);
+                return _proc;
+            }
+            catch (System.ComponentModel.Win32Exception e)
+            {
+                MessageBox.Show($"{e.Message}\n{e.StackTrace}");
+                return null;
+            }
+
+        }
     }
 }
