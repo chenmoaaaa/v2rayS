@@ -18,14 +18,11 @@ namespace v2rayS
         {
             this.ShowInTaskbar = false;
             this.WindowState = FormWindowState.Minimized;
-            this.Hide();
             InitializeComponent();
         }
 
         private void BaseForm_Load(object sender, EventArgs e)
         {
-            this.ShowInTaskbar = false;
-            this.WindowState = FormWindowState.Minimized;
             this.Hide();
 
             TaskbarNotifyIcon.ContextMenu = TaskbarContextMenu.GetInstance();

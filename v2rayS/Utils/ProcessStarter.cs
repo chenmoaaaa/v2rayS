@@ -17,7 +17,7 @@ namespace v2rayS.Utils
                 FileName = path != null ? path + "\\" + name : name,
                 Arguments = arguments,
                 CreateNoWindow = true,
-                WorkingDirectory = path ?? Directory.GetCurrentDirectory(),
+                WorkingDirectory = path ?? Controllers.Process.CurrentDirectory,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
             Process _proc;
@@ -40,7 +40,7 @@ namespace v2rayS.Utils
                 FileName = path != null ? path + "\\" + name : name,
                 Arguments = arguments,
                 CreateNoWindow = true,
-                WorkingDirectory = path ?? Directory.GetCurrentDirectory()
+                WorkingDirectory = path ?? Controllers.Process.CurrentDirectory
             };
             Process _proc;
             try

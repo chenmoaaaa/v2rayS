@@ -15,6 +15,8 @@ namespace v2rayS
         [STAThread]
         static void Main()
         {
+            Directory.SetCurrentDirectory(Process.CurrentDirectory);
+
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             ConfigHandler.LoadFile();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Permissions;
 using System.Text;
 using System.Windows.Forms;
@@ -12,7 +13,7 @@ namespace v2rayS.Models
 {
     class TaskbarContextMenu
     {
-        private static readonly int ITEM_COUNT = 9;
+        private static readonly int ITEM_COUNT = 10;
         private static ContextMenu _menu;
         private static MenuItem[] _items;
         private static Configuration _config = ConfigHandler.GetConfig();
@@ -40,10 +41,11 @@ namespace v2rayS.Models
                 _items[2] = new MenuItem("-");
                 _items[3] = new MenuItem("编辑config.json", new EventHandler(EditConfigFile_OnClick));
                 _items[4] = new MenuItem("编辑PAC文件", new EventHandler(EditPacFile_OnClick));
-                _items[5] = new MenuItem("重启V2Ray进程", new EventHandler(RestartProcess_OnClick));
-                _items[6] = new MenuItem("开机启动", new EventHandler(AutoStart_OnClick)) { Checked = _config.IsAutoStart };
-                _items[7] = new MenuItem("-");
-                _items[8] = new MenuItem("退出", (sender, e) => Process.Exit());
+                _items[5] = new MenuItem("-");
+                _items[6] = new MenuItem("重启V2Ray进程", new EventHandler(RestartProcess_OnClick));
+                _items[7] = new MenuItem("开机启动", new EventHandler(AutoStart_OnClick)) { Checked = _config.IsAutoStart };
+                _items[8] = new MenuItem("-");
+                _items[9] = new MenuItem("退出", (sender, e) => Process.Exit());
 
                 _menu = new ContextMenu(_items);
             }
@@ -115,19 +117,19 @@ namespace v2rayS.Models
                 MessageBox.Show("请以管理员权限运行");
                 return;
             }
-            string strName = Application.ExecutablePath;
+            string strName = Assembly.GetExecutingAssembly().Location;
             string strnewName = strName.Substring(strName.LastIndexOf("\\") + 1);
             if (_config.IsAutoStart)
             {
                 //修改注册表，使程序开机时不自动执行
-                _items[6].Checked = false;
+                _items[7].Checked = false;
                 Microsoft.Win32.RegistryKey Rkey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
                 Rkey.DeleteValue("v2rayS", false);
                 _config.IsAutoStart = false;
             }
             else
             {
-                _items[6].Checked = true;
+                _items[7].Checked = true;
                 if (!File.Exists(strName))//指定文件是否存在  
                     return;
                 Microsoft.Win32.RegistryKey Rkey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
